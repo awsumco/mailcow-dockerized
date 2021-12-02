@@ -1077,12 +1077,19 @@ if (isset($_GET['query'])) {
           break;
           case "bcc":
             switch ($object) {
-              case "all":
+	    case "all":
+		$domain = $extra;
                 $bcc_items = bcc('get');
                 if (!empty($bcc_items)) {
-                  foreach ($bcc_items as $bcc_item) {
-                    if ($details = bcc('details', $bcc_item)) {
-                      $data[] = $details;
+		  foreach ($bcc_items as $bcc_item) {
+                   if ($details = bcc('details', $bcc_item)) {
+                           if (empty($domain)) {
+                                   $data[] = $details;
+                           } else {
+                                   if ($details['domain'] == $domain ) {
+                                           $data[] = $details;
+                                   }
+                           }
                     }
                     else {
                       continue;
